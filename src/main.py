@@ -1,6 +1,5 @@
 from pathlib import Path
 
-
 BATAS_KETUNTASAN = 60
 
 
@@ -13,9 +12,11 @@ def baca_nilai(nama_file):
             for nomor_baris, baris in enumerate(file, start=1):
                 baris = baris.strip()
 
+                # Lewati baris kosong
                 if not baris:
                     continue
 
+                # Pisahkan NIM dan nilai berdasarkan koma
                 bagian = baris.split(",")
 
                 if len(bagian) != 2:
@@ -27,6 +28,7 @@ def baca_nilai(nama_file):
 
                 nim = bagian[0].strip()
 
+                # Validasi nilai harus berupa angka
                 try:
                     nilai = float(bagian[1].strip())
                 except ValueError:
@@ -36,6 +38,7 @@ def baca_nilai(nama_file):
                     )
                     continue
 
+                # Validasi NIM dan rentang nilai
                 if not nim or not 0 <= nilai <= 100:
                     print(
                         f"Peringatan: Data tidak valid pada baris "
@@ -47,6 +50,10 @@ def baca_nilai(nama_file):
 
     except FileNotFoundError:
         print(f"Error: File '{nama_file}' tidak ditemukan.")
+        return None
+
+    except OSError as error:
+        print(f"Error saat membaca file: {error}")
         return None
 
     return data_nilai
@@ -63,10 +70,13 @@ def analisis_nilai(data_nilai):
     rata_rata = sum(nilai_siswa) / jumlah_siswa
     nilai_tertinggi = max(nilai_siswa)
     nilai_terendah = min(nilai_siswa)
+
     jumlah_tuntas = sum(
-        1 for nilai in nilai_siswa
+        1
+        for nilai in nilai_siswa
         if nilai >= BATAS_KETUNTASAN
     )
+
     jumlah_belum_tuntas = jumlah_siswa - jumlah_tuntas
 
     return {
@@ -113,8 +123,11 @@ def tampilkan_hasil(data_nilai, hasil):
 
 def main():
     """Menjalankan program utama."""
-    folder_proyek = Path(__file__).resolve().parent
+    folder_proyek = Path(__file__).resolve().parent.parent
     lokasi_file = folder_proyek / "data" / "nilai_contoh.txt"
+
+    print("Lokasi main.py :", Path(__file__).resolve())
+    print("Lokasi data    :", lokasi_file)
 
     data_nilai = baca_nilai(lokasi_file)
 
