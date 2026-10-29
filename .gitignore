@@ -1,0 +1,26 @@
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# VS Code
+.vscode/
+
+# Hasil output program
+output/
+hasil/
+
+# File laporan yang dihasilkan program
+data/hasil_rekap.txt
+data/laporan_hasil.txt
+
+# Sistem operasi
+.DS_Store
+Thumbs.db
+
+# Log file
+*.log
